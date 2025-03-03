@@ -7,7 +7,7 @@
 ## 2 Build
 ```bash
 # Build twice
-xelatex main && sleep 1 xelatex main
+xelatex main && sleep 1 && xelatex main
 ```
 
 ## 3 Todo
