@@ -1,3 +1,6 @@
+% !TEX program = lualatex
+% !TEX encoding = UTF-8
+% !BIB program = biber
 \documentclass[UTF8,a4paper]{ctexart}
 \usepackage{geometry}
 \geometry{left=3cm,right=3cm,top=2.5cm,bottom=2.5cm}
@@ -5,7 +8,55 @@
 \usepackage{titletoc}
 \usepackage{setspace}
 \usepackage{enumitem}
-\usepackage[backend=biber,style=gb7714-2015]{biblatex}
+\usepackage[
+  style=authoryear,  % 基础样式使用作者-年份
+  labelnumber=true,  % 启用序号
+  backend=biber,      % 使用biber作为后端
+  sorting=none
+]{biblatex}
+% 导入bib文件
+\addbibresource{ref.bib} % 注意这里是\addbibresource，不是\bibliography
+% 作者和年份之间用逗号分隔
+\renewcommand*{\nameyeardelim}{\space}
+% 去除期刊名称前的 "In: "
+\renewbibmacro{in:}{}
+% 移除特定文献类型的标题引号
+\DeclareFieldFormat{title}{#1}                    % 通用标题格式
+\DeclareFieldFormat[article]{title}{#1}           % 文章标题
+\DeclareFieldFormat[inproceedings]{title}{#1}     % 会议论文标题 - 添加这一行
+\DeclareFieldFormat[incollection]{title}{#1}      % 文集中的章节
+\DeclareFieldFormat[inbook]{title}{#1}            % 书中的章节
+\DeclareFieldFormat{citetitle}{#1}                % 引用中的标题
+
+% 同时，对于inproceedings类型，还需要修改booktitle字段（如果有的话）
+\DeclareFieldFormat[inproceedings]{booktitle}{#1}
+
+% 重新定义cite命令：作者, 年份[序号]（序号为上标）
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \printnames{labelname}%
+   \setunit{\nameyeardelim}%
+   % \printfield{year}%
+   \setunit{}% 清除之前的分隔符
+   \textsuperscript{[\printfield{labelnumber}]}% 使用文本上标命令
+  }
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+% 参考文献列表中显示带中括号的序号
+\defbibenvironment{bibliography}
+  {\list
+     {\printtext[labelnumberwidth]{[\printfield{labelnumber}]}}  % 序号带中括号
+     {\setlength{\labelwidth}{\labelnumberwidth}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}}%
+      \renewcommand*{\makelabel}[1]{\hss##1}}
+  {\endlist}
+  {\item}
 \usepackage{fancyhdr}
 \usepackage{hyperref}
 
@@ -130,17 +181,11 @@ Hello......（英文摘要正文）\\[1em]
 \section{引言}
 \subsection{概述}
 \subsubsection{背景分析}
-1973年，美国经济学家麦金农（Ronald I.Mckinnon）......
+1973年，美国经济学家麦金农（Ronald I.Mckinnon）\cite{zhou-2023}......
 
 % 参考文献
 \newpage
-\begin{thebibliography}{99}
-\addcontentsline{toc}{section}{参考文献}
-\bibitem{ref1} 李季, 王宇. 机构投资者：新金融景观[M]. 东北财经大学出版社, 2002.
-\bibitem{ref2} 张丹. QFII实施现状及对我国证券市场的影响[J]. 商业研究, 2006(2):25-27.
-\bibitem{ref3} John D. On Demand[J]. American Economic Review, 1956, 9:15-25.
-\bibitem{ref4} John D. On Demand[M]. Oxford Press, 1956.
-\end{thebibliography}
+\printbibliography[heading=bibintoc, title=参考文献] % 加入目录并设置标题
 
 % 附录
 \newpage
