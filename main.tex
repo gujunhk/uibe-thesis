@@ -1,7 +1,8 @@
 % !TEX program = xelatex
 % !TEX encoding = UTF-8
 % !BIB program = biber
-\documentclass[UTF8,a4paper]{ctexart}
+\PassOptionsToPackage{AutoFakeBold=2}{xeCJK}  % 中文字体伪粗体（必须在documentclass之前传入）
+\documentclass[UTF8,a4paper,boldfont]{ctexart}
 \usepackage{geometry}
 \geometry{left=3.1cm,right=3.1cm,top=3.6cm,bottom=3.6cm}
 \usepackage{titlesec}
@@ -13,6 +14,11 @@
 \graphicspath{{figs/}}
 \usepackage{array}
 \usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, fit, backgrounds, calc, shapes.geometric, shapes.multipart}
 \usepackage[
   style=authoryear,  % 基础样式使用作者-年份
   labelnumber=true,  % 启用序号
@@ -67,7 +73,10 @@
 
 % 全局格式设置
 \setmainfont{Times New Roman}
-\setCJKmainfont{SimSun}
+% \setCJKmainfont{Microsoft YaHei}[BoldFont={Microsoft YaHei Bold}]
+% \setCJKmainfont{SimHei}[BoldFont=SimHei]
+% \setCJKmainfont{SimSun}[BoldFont=SimSun]
+% \xeCJKsetup{AutoFakeBold=1.5}  % 中文字体伪粗体（解决\bfseries对中文无效的问题）
 \zihao{-4}
 \setlength{\baselineskip}{22pt}
 \justifying
